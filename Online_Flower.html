@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bloom Haven — Flowers & Bouquets</title>
+  <meta name="description" content="Responsive E-commerce Flower Shop demo using pure HTML & CSS" />
+  <style>
+    :root{
+      --bg:#fffdf8;
+      --card:#ffffff;
+      --muted:#6b6b6b;
+      --accent:#d64b7c; /* warm pink */
+      --accent-2:#7cc576; /* soft green */
+      --glass: rgba(255,255,255,0.6);
+      --shadow: 0 6px 18px rgba(15,15,15,0.08);
+      --radius: 14px;
+      --max-width:1200px;
+      --gap:20px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: linear-gradient(180deg, #fbfaf9 0%, #f7f4f3 100%);
+      color:#222;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:32px 18px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .container{
+      width:100%;
+      max-width:var(--max-width);
+    }
+
+    /* Header */
+    header{
+      display:flex;
+      gap:var(--gap);
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:24px;
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit
+    }
+    .logo{
+      width:56px;height:56px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),#ffb4d2);color:white;font-weight:700;box-shadow:var(--shadow)
+    }
+    .brand h1{font-size:18px;margin:0}
+    nav{
+      display:flex;gap:16px;align-items:center
+    }
+    nav a{ text-decoration:none;color:var(--muted);font-weight:600 }
+
+    .actions{display:flex;gap:12px;align-items:center}
+    .search{border-radius:12px;padding:8px 12px;background:var(--glass);display:flex;align-items:center;gap:10px;border:1px solid rgba(0,0,0,0.04)}
+    .search input{border:0;background:transparent;outline:none;width:160px}
+    .cart{position:relative}
+    .cart .count{position:absolute;top:-6px;right:-8px;background:var(--accent);color:white;font-size:12px;padding:4px 6px;border-radius:999px}
+
+    /* Hero */
+    .hero{
+      display:grid;grid-template-columns:1fr 420px;gap:32px;align-items:center;margin-bottom:28px
+    }
+    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));padding:28px;border-radius:20px;box-shadow:var(--shadow)}
+    .hero h2{margin:0 0 8px 0;font-size:28px}
+    .hero p{margin:0 0 16px;color:var(--muted)}
+    .cta{display:inline-block;padding:12px 18px;border-radius:12px;background:var(--accent);color:white;text-decoration:none;font-weight:700}
+
+    .hero-visual{border-radius:20px;overflow:hidden;box-shadow:var(--shadow);height:100%;display:flex;align-items:center;justify-content:center}
+    .hero-visual img{width:100%;height:100%;object-fit:cover;display:block}
+
+    /* Product grid */
+    .section-title{display:flex;justify-content:space-between;align-items:center;margin:18px 0}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+    }
+
+    .card{
+      background:var(--card);border-radius:16px;padding:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;transition:transform .22s ease, box-shadow .22s ease;
+    }
+    .card:hover{transform:translateY(-6px)}
+    .card img{width:100%;height:200px;object-fit:cover;border-radius:12px}
+    .tag{font-size:12px;color:var(--muted)}
+    .price{font-weight:800}
+    .card-footer{display:flex;justify-content:space-between;align-items:center}
+    .btn{padding:8px 12px;border-radius:10px;border:0;background:var(--accent);color:white;text-decoration:none;font-weight:700}
+
+    /* Filters / sidebar */
+    .layout{display:grid;grid-template-columns:260px 1fr;gap:22px;align-items:start}
+    .sidebar{background:var(--card);border-radius:12px;padding:16px;box-shadow:var(--shadow)}
+    .filter h4{margin:0 0 12px 0}
+    .category{display:flex;flex-direction:column;gap:8px}
+    .category a{text-decoration:none;color:var(--muted);font-weight:600}
+
+    /* Footer */
+    footer{margin-top:40px;padding:24px;border-radius:12px;background:transparent;display:flex;justify-content:space-between;gap:20px;align-items:center}
+    footer small{color:var(--muted)}
+
+    /* Responsive */
+    @media (max-width:1100px){
+      .grid{grid-template-columns:repeat(3,1fr)}
+      .hero{grid-template-columns:1fr 360px}
+      .layout{grid-template-columns:220px 1fr}
+    }
+    @media (max-width:880px){
+      header{flex-direction:column;align-items:flex-start;gap:12px}
+      .hero{grid-template-columns:1fr}
+      .hero-visual{order:-1;height:220px}
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .layout{grid-template-columns:1fr}
+      .sidebar{order:-1}
+      .search input{width:110px}
+    }
+    @media (max-width:480px){
+      body{padding:18px 12px}
+      .grid{grid-template-columns:1fr}
+      .logo{width:44px;height:44px}
+      .brand h1{font-size:16px}
+      .hero h2{font-size:22px}
+      .search input{width:70px}
+      .card img{height:160px}
+    }
+
+    /* Small utilities */
+    .muted{color:var(--muted)}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(124,197,118,0.12);font-weight:700;color:var(--accent-2)}
+
+    /* Tiny form styles */
+    form input, form textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);outline:none}
+    form label{font-size:13px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a class="brand" href="#">
+        <div class="logo">BH</div>
+        <div>
+          <h1>Bloom Haven</h1>
+          <div class="muted" style="font-size:12px">Fresh bouquets · Same-day delivery</div>
+        </div>
+      </a>
+
+      <nav>
+        <a href="#">Shop</a>
+        <a href="#">Occasions</a>
+        <a href="#">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="actions">
+        <div class="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-4.35-4.35" stroke="#555" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <input placeholder="Search flowers, roses...">
+        </div>
+        <div class="cart" title="Cart">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6h15l-1.6 8H8L6 6z" stroke="#555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20" r="1" fill="#555"/><circle cx="18" cy="20" r="1" fill="#555"/></svg>
+          <div class="count">2</div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <aside class="hero-card">
+          <h2>Brighten someone's day — fresh bouquets delivered today</h2>
+          <p>Hand-tied bouquets, seasonal arrangements, and gifts — crafted with love by local florists.</p>
+          <a class="cta" href="#shop">Shop Bestsellers</a>
+
+          <div style="display:flex;gap:10px;margin-top:14px;align-items:center">
+            <div class="pill">Free delivery ₹499+</div>
+            <div class="muted" style="font-size:13px">Same-day delivery in select cities</div>
+          </div>
+        </aside>
+
+        <div class="hero-visual">
+          <img src="https://images.unsplash.com/photo-1504198453319-5ce911bafcde?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=1b1e4d3f8aaf9a6f8f5b4b0e5edb4fbc" alt="flowers"/>
+        </div>
+      </section>
+
+      <section class="layout">
+        <aside class="sidebar">
+          <div class="filter">
+            <h4>Categories</h4>
+            <div class="category">
+              <a href="#">All</a>
+              <a href="#">Roses</a>
+              <a href="#">Mixed Bouquets</a>
+              <a href="#">Plants</a>
+              <a href="#">Sympathy</a>
+            </div>
+          </div>
+
+          <hr style="margin:16px 0;border:none;border-top:1px solid rgba(0,0,0,0.04)">
+
+          <div class="filter">
+            <h4>Price</h4>
+            <div class="muted">Under ₹999</div>
+            <div style="height:8px"></div>
+            <div class="muted">₹1000 - ₹1999</div>
+            <div style="height:8px"></div>
+            <div class="muted">₹2000+</div>
+          </div>
+        </aside>
+
+        <section>
+          <div class="section-title">
+            <h3 style="margin:0">Bestsellers</h3>
+            <div class="muted">Showing 12 results</div>
+          </div>
+
+          <div class="grid" id="shop">
+
+            <!-- product card 1 -->
+            <article class="card">
+              <img src="https://images.unsplash.com/photo-1504615755583-2916b52192a6?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&s=0c3e2a8d5b1c4f953c8c8a10d7c1a73d" alt="roses bouquet">
+              <div>
+                <div class="tag">Roses · Valentine's</div>
+                <h4 style="margin:6px 0">Classic Red Roses</h4>
+                <div class="muted" style="font-size:13px">A timeless bouquet of 12 red roses.</div>
+              </div>
+              <div class="card-footer">
+                <div>
+                  <div class="price">₹1,299</div>
+                </div>
+                <a class="btn" href="#">Add</a>
+              </div>
+            </article>
+
+            <!-- product card 2 -->
+            <article class="card">
+              <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&s=bef1d2d8c09250f1f7e3d2a6dcb2f3c4" alt="peony bouquet">
+              <div>
+                <div class="tag">Mixed · Spring</div>
+                <h4 style="margin:6px 0">Peony Promise</h4>
+                <div class="muted" style="font-size:13px">Soft peonies and seasonal blooms in pastel tones.</div>
+              </div>
+              <div class="card-footer">
+                <div>
+                  <div class="price">₹1,499</div>
+                </div>
+                <a class="btn" href="#">Add</a>
+              </div>
+            </article>
+
+            <!-- product card 3 -->
+            <article class="card">
+              <img src="https://images.unsplash.com/photo-1533089860892-a7f9f1123e7b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&s=b3a40e85e1c2e9d2f5a9a4b1e2d9c3a2" alt="sunflower bouquet">
+              <div>
+                <div class="tag">Bright · Cheer</div>
+                <h4 style="margin:6px 0">Sunny Sunflowers</h4>
+                <div class="muted" style="font-size:13px">Large sunflowers to spark a smile.</div>
+              </div>
+              <div class="card-footer">
+                <div>
+                  <div class="price">₹899</div>
+                </div>
+                <a class="btn" href="#">Add</a>
+              </div>
+            </article>
+
+            <!-- product card 4 -->
+            <article class="card">
+              <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&s=8b6bee5d4a6b6fc2f2f8af3c1e6c7f3e" alt="green plant">
+              <div>
+                <div class="tag">Plants</div>
+                <h4 style="margin:6px 0">Easy-care Pothos</h4>
+                <div class="muted" style="font-size:13px">Trailing houseplant — great for beginners.</div>
+              </div>
+              <div class="card-footer">
+                <div>
+                  <div class="price">₹649</div>
+                </div>
+                <a class="btn" href="#">Add</a>
+              </div>
+            </article>
+
+            <!-- more product cards (copy/paste) -->
+            <article class="card">
+              <img src="https://images.unsplash.com/photo-1526318472351-c75fcf070952?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&s=2dbd0a0f1c2f3b4e6d9f1b2c1a3e4d5f" alt="mixed bouquet">
+              <div>
+                <div class="tag">Occasion</div>
+                <h4 style="margin:6px 0">Pastel Delight</h4>
+                <div class="muted" style="font-size:13px">Soft seasonal mix — perfect for birthdays.</div>
+              </div>
+              <div class="card-footer">
+                <div class="price">₹1,099</div>
+                <a class="btn" href="#">Add</a>
+              </div>
+            </article>
+
+            <article class="card">
+              <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&s=0b6f4e1f5d3b6e4c2a1d3f0e2b4c6a8d" alt="wedding bouquet">
+              <div>
+                <div class="tag">Weddings</div>
+                <h4 style="margin:6px 0">Bridal White</h4>
+                <div class="muted" style="font-size:13px">Elegant arrangement for weddings and events.</div>
+              </div>
+              <div class="card-footer">
+                <div class="price">₹2,499</div>
+                <a class="btn" href="#">Add</a>
+              </div>
+            </article>
+
+            <article class="card">
+              <img src="https://images.unsplash.com/photo-1526312426976-489f2f0c6b6b?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&s=ea6b2b3e2d4f5c6a7b8d9e0f1a2b3c4d" alt="orchids">
+              <div>
+                <div class="tag">Exotic</div>
+                <h4 style="margin:6px 0">Purple Orchids</h4>
+                <div class="muted" style="font-size:13px">Sophisticated long-lasting orchids.</div>
+              </div>
+              <div class="card-footer">
+                <div class="price">₹1,899</div>
+                <a class="btn" href="#">Add</a>
+              </div>
+            </article>
+
+            <article class="card">
+              <img src="https://images.unsplash.com/photo-1518976024611-486f8b5b3f3d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&s=7d8c9b0a1e2f3c4d5b6a7c8d9e0f1a2b" alt="small posy">
+              <div>
+                <div class="tag">Budget</div>
+                <h4 style="margin:6px 0">Sweet Posy</h4>
+                <div class="muted" style="font-size:13px">Hand-tied small posy for quick gifting.</div>
+              </div>
+              <div class="card-footer">
+                <div class="price">₹449</div>
+                <a class="btn" href="#">Add</a>
+              </div>
+            </article>
+
+            <article class="card">
+              <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&s=3e7f0b9a2c4d5e6f7a8b9c0d1e2f3a4b" alt="gift box">
+              <div>
+                <div class="tag">Gifts</div>
+                <h4 style="margin:6px 0">Bloom Gift Box</h4>
+                <div class="muted" style="font-size:13px">Flowers + chocolates — ready to gift.</div>
+              </div>
+              <div class="card-footer">
+                <div class="price">₹1,799</div>
+                <a class="btn" href="#">Add</a>
+              </div>
+            </article>
+
+          </div>
+
+          <footer>
+            <div>
+              <strong>Bloom Haven</strong>
+              <div class="muted">Beautiful blooms, delivered with care</div>
+            </div>
+            <div style="text-align:right">
+              <small>© 2025 Bloom Haven · All rights reserved</small>
+              <div style="height:8px"></div>
+              <small class="muted">Made with ❤ · Pure HTML & CSS</small>
+            </div>
+          </footer>
+        </section>
+      </section>
+
+      <section id="contact" style="margin-top:28px">
+        <div style="background:var(--card);padding:18px;border-radius:12px;box-shadow:var(--shadow)">
+          <h3 style="margin-top:0">Contact & Custom Orders</h3>
+          <form>
+            <label>Name</label>
+            <input placeholder="Your name" />
+            <div style="height:10px"></div>
+            <label>Email</label>
+            <input placeholder="you@domain.com" />
+            <div style="height:10px"></div>
+            <label>Message</label>
+            <textarea rows="4" placeholder="Tell us about your custom order"></textarea>
+            <div style="height:12px"></div>
+            <button class="btn" type="button">Send Request</button>
+          </form>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</body>
+</html>
